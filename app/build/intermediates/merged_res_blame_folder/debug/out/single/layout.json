@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/item_match.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/item_match.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/dialog_substitution.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/dialog_substitution.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/fragment_lineup.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/fragment_lineup.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/dialog_stat.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/dialog_stat.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/activity_select_match.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/activity_select_match.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/activity_match_card.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/activity_match_card.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/activity_main.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/item_player_lineup.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/item_player_lineup.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-mergeDebugResources-38:/layout/activity_manage_match.xml",
+        "source": "com.epo.footballstats.app-main-41:/layout/activity_manage_match.xml"
+    }
+]

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#121212</color>
+    <color name="card_bg">#1E1E1E</color>
+    <color name="score_bg">#2A2A2A</color>
+    <color name="number_bg">#2C2C2C</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_secondary">#AAAAAA</color>
+    <color name="green_primary">#4CAF50</color>
+    <color name="btn_blue">#1565C0</color>
+    <color name="btn_green">#2E7D32</color>
+    <color name="btn_red">#C62828</color>
+    <color name="btn_orange">#E65100</color>
+    <color name="btn_yellow">#F57F17</color>
+</resources>

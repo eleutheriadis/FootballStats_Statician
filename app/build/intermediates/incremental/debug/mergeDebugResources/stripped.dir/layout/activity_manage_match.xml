@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <!-- Σκορ header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/card_bg"
+        android:padding="12dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvHomeTeamName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tvLiveScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 - 0"
+            android:textColor="@color/green_primary"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="16dp" />
+
+        <TextView
+            android:id="@+id/tvAwayTeamName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- Επιλογή ομάδας -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ομάδα: "
+            android:textColor="@color/text_secondary" />
+
+        <RadioGroup
+            android:id="@+id/rgTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbHomeTeam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Αρχική"
+                android:layout_marginEnd="8dp"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/rbAwayTeam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Φιλοξ." />
+        </RadioGroup>
+    </LinearLayout>
+
+    <!-- Scroll με κουμπιά στατιστικών -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- ΣΟΥΤ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΣΟΥΤ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnShotOnTarget"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Εντός Εστίας" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_blue" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnShotOffTarget"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Εκτός Εστίας" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_blue" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnShotBlocked"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Μπλοκαρισμένο" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_blue" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnShotHeader"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κεφαλιά" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_blue" />
+            </LinearLayout>
+
+            <!-- ΤΑΚΛΙΝ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΤΑΚΛΙΝ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnTackleSuccess"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Επιτυχές" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_green" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnTackleFail"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Αποτυχημένο" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <!-- ΠΑΣΕΣ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΠΑΣΕΣ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPassSuccess"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Επιτυχής" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_green" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPassFail"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Αποτυχημένη" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <!-- ΣΕΝΤΡΕΣ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΣΕΝΤΡΕΣ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCrossSuccess"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Επιτυχής" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_green" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCrossFail"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Αποτυχημένη" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <!-- ΑΣΣΙΣΤ / ΛΑΘΟΣ -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginTop="8dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAssist"
+                    android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                    android:text="ΑΣΣΙΣΤ" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_orange" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnError"
+                    android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1"
+                    android:text="ΛΑΘΟΣ" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <!-- ΦΑΟΥΛ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΦΑΟΥΛ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFoulFor"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Υπέρ" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_green" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFoulAgainst"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κατά" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <!-- ΚΟΡΝΕΡ -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCorner"
+                android:layout_width="match_parent" android:layout_height="52dp"
+                android:text="ΚΕΡΔΙΣΜΕΝΟ ΚΟΡΝΕΡ" android:layout_margin="3dp"
+                android:layout_marginTop="8dp"
+                app:backgroundTint="@color/btn_blue" />
+
+            <!-- ΚΑΡΤΕΣ -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ΚΑΡΤΕΣ" android:textColor="@color/green_primary"
+                android:textSize="12sp" android:textStyle="bold"
+                android:paddingTop="8dp" android:paddingBottom="4dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnYellowCardFor"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κίτρινη Υπέρ" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_yellow" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnYellowCardAgainst"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κίτρινη Κατά" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_yellow" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRedCardFor"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κόκκινη Υπέρ" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRedCardAgainst"
+                    android:layout_width="0dp" android:layout_height="48dp" android:layout_weight="1"
+                    android:text="Κόκκινη Κατά" android:textSize="11sp" android:layout_margin="3dp"
+                    app:backgroundTint="@color/btn_red" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

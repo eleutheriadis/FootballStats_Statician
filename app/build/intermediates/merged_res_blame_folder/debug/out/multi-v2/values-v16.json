@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.epo.footballstats.app-mergeDebugResources-37:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/Users/nikos/.gradle/caches/transforms-3/9d797ee319a098f989e92fe6436f2e2c/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                },
+                {
+                    "source": "/Users/nikos/.gradle/caches/transforms-3/f2152d03a49c9ccf8e815cf182dd12cb/transformed/core-1.9.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                }
+            ]
+        }
+    ]
+}
