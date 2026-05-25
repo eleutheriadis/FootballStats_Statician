@@ -1874,6 +1874,8 @@ int color m3_timepicker_secondary_text_button_ripple_color 0x7f050220
 int color m3_timepicker_secondary_text_button_text_color 0x7f050221
 int color m3_timepicker_time_input_stroke_color 0x7f050222
 int color m3_tonal_button_ripple_color_selector 0x7f050223
+int color matchFinished 0x7f05031b
+int color matchLive 0x7f05031c
 int color material_blue_grey_800 0x7f050224
 int color material_blue_grey_900 0x7f050225
 int color material_blue_grey_950 0x7f050226
@@ -3923,6 +3925,7 @@ int string bottomsheet_action_expand 0x7f100020
 int string bottomsheet_action_expand_halfway 0x7f100021
 int string bottomsheet_drag_handle_clicked 0x7f100022
 int string bottomsheet_drag_handle_content_description 0x7f100023
+int string btnStatistician 0x7f1000bf
 int string character_counter_content_description 0x7f100024
 int string character_counter_overflowed_content_description 0x7f100025
 int string character_counter_pattern 0x7f100026
@@ -4075,6 +4078,7 @@ int string searchview_navigation_content_description 0x7f1000b8
 int string side_sheet_accessibility_pane_title 0x7f1000b9
 int string side_sheet_behavior 0x7f1000ba
 int string status_bar_notification_info_overflow 0x7f1000bb
+int string subtitle 0x7f1000c0
 int string title_manage_match 0x7f1000bc
 int string title_match_card 0x7f1000bd
 int string title_select_match 0x7f1000be

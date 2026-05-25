@@ -8,11 +8,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Επιλογή Αγώνα"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:padding="16dp"
+        android:text="@string/title_select_match"
         android:textColor="@color/white"
-        android:padding="16dp" />
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <ProgressBar
         android:id="@+id/progressBar"
