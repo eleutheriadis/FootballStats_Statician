@@ -253,7 +253,7 @@ public class MatchCardActivity extends AppCompatActivity {
                             .stream().filter(lp -> !lp.isStarter() && lp.isActive()).collect(Collectors.toList());
 
                     if (spinnerPlayerOut.getSelectedItem() == null ||
-                        spinnerPlayerIn.getSelectedItem() == null) {
+                            spinnerPlayerIn.getSelectedItem() == null) {
                         Toast.makeText(this, "Επιλέξτε παίκτες", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -294,7 +294,7 @@ public class MatchCardActivity extends AppCompatActivity {
                 .addOnSuccessListener(ref ->
                         Toast.makeText(this,
                                 "Αλλαγή: " + playerOut.getPlayerName() +
-                                " → " + playerIn.getPlayerName(), Toast.LENGTH_SHORT).show())
+                                        " → " + playerIn.getPlayerName(), Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Σφάλμα: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
@@ -312,8 +312,8 @@ public class MatchCardActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            if (position == 0) return LineupFragment.newInstance(homePlayers, homeTeamName);
-            if (position == 1) return LineupFragment.newInstance(awayPlayers, awayTeamName);
+            if (position == 0) return LineupFragment.newInstance(matchId, homeTeamId, homeTeamName);
+            if (position == 1) return LineupFragment.newInstance(matchId, awayTeamId, awayTeamName);
             return SubstitutionsFragment.newInstance(substitutions);
         }
 

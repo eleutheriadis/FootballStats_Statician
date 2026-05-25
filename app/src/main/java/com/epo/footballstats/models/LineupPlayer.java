@@ -10,8 +10,8 @@ public class LineupPlayer {
     private String playerName;
     private String position;
     private int jerseyNumber;
-    private boolean isStarter;   // true = ενδεκάδα, false = αναπληρωματικός
-    private boolean isActive;    // false αν έχει αντικατασταθεί
+    private boolean isStarter;
+    private boolean isActive;
 
     public LineupPlayer() {}
 

@@ -47,13 +47,13 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         int color;
         switch (match.getStatus() != null ? match.getStatus() : "") {
             case "LIVE":
-                color = 0xFF4CAF50; // πράσινο
+                color = 0xFF4CAF50;
                 break;
             case "FINISHED":
-                color = 0xFF9E9E9E; // γκρι
+                color = 0xFF9E9E9E;
                 break;
             default:
-                color = 0xFF2196F3; // μπλε
+                color = 0xFF2196F3;
         }
         holder.tvStatus.setTextColor(color);
 

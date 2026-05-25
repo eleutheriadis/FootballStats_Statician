@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ΕΠΟ Stats</string>
+    <string name="subtitle">Στατιστικά Πρωταθλήματος</string>
+    <string name="btnStatistician">ΥΠΕΥΘΥΝΟΣ ΣΤΑΤΙΣΤΙΚΗΣ</string>
     <string name="title_select_match">Επιλογή Αγώνα</string>
     <string name="title_match_card">Κάρτα Αγώνα</string>
     <string name="title_manage_match">Διαχείριση Αγώνα</string>

@@ -12,4 +12,6 @@
     <color name="btn_red">#C62828</color>
     <color name="btn_orange">#E65100</color>
     <color name="btn_yellow">#F57F17</color>
+    <color name="matchLive">#4CAF50</color>
+    <color name="matchFinished">#9E9E9E</color>
 </resources>
