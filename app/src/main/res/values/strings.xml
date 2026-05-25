@@ -3,7 +3,12 @@
     <string name="app_name">ΕΠΟ Stats</string>
     <string name="subtitle">Στατιστικά Πρωταθλήματος</string>
     <string name="btnStatistician">ΥΠΕΥΘΥΝΟΣ ΣΤΑΤΙΣΤΙΚΗΣ</string>
+    <string name="btnFan">ΦΙΛΑΘΛΟΣ</string>
     <string name="title_select_match">Επιλογή Αγώνα</string>
     <string name="title_match_card">Κάρτα Αγώνα</string>
     <string name="title_manage_match">Διαχείριση Αγώνα</string>
+    <string name="title_fan_select_match">Παρακολούθηση Αγώνων</string>
+    <string name="title_fan_match">Live Αγώνας</string>
+    <string name="tab_live_feed">Εξέλιξη</string>
+    <string name="tab_match_stats">Στατιστικά</string>
 </resources>

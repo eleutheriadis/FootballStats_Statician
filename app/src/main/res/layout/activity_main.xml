@@ -40,4 +40,12 @@
         android:textSize="16sp"
         app:backgroundTint="@color/green_primary" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFan"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/btnFan"
+        android:textSize="16sp"
+        app:backgroundTint="@color/btn_blue" />
+
 </LinearLayout>

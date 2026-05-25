@@ -10,7 +10,8 @@ import com.epo.footballstats.R;
 
 /**
  * Κεντρική οθόνη: επιλογή ρόλου.
- * Για την εργασία χρησιμοποιούμε μόνο τον ρόλο "Υπεύθυνος Στατιστικής" (R1+R2).
+ *   • Υπεύθυνος Στατιστικής → R1 + R2
+ *   • Φίλαθλος             → R3 + R4
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -20,9 +21,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnStatistician = findViewById(R.id.btnStatistician);
+        Button btnFan          = findViewById(R.id.btnFan);
 
         btnStatistician.setOnClickListener(v -> {
             Intent intent = new Intent(this, SelectMatchActivity.class);
+            startActivity(intent);
+        });
+
+        btnFan.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FanSelectMatchActivity.class);
             startActivity(intent);
         });
     }

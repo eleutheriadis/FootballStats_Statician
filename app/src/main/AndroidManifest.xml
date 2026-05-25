@@ -36,6 +36,16 @@
             android:name=".activities.ManageMatchActivity"
             android:label="@string/title_manage_match" />
 
+        <!-- R3/R4: Φίλαθλος - επιλογή αγώνα -->
+        <activity
+            android:name=".activities.FanSelectMatchActivity"
+            android:label="@string/title_fan_select_match" />
+
+        <!-- R3/R4: Φίλαθλος - παρακολούθηση αγώνα (live feed + στατιστικά) -->
+        <activity
+            android:name=".activities.FanMatchActivity"
+            android:label="@string/title_fan_match" />
+
     </application>
 
 </manifest>

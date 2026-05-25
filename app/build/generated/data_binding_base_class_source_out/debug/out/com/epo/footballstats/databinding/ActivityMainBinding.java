@@ -20,11 +20,15 @@ public final class ActivityMainBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final MaterialButton btnFan;
+
+  @NonNull
   public final MaterialButton btnStatistician;
 
-  private ActivityMainBinding(@NonNull LinearLayout rootView,
+  private ActivityMainBinding(@NonNull LinearLayout rootView, @NonNull MaterialButton btnFan,
       @NonNull MaterialButton btnStatistician) {
     this.rootView = rootView;
+    this.btnFan = btnFan;
     this.btnStatistician = btnStatistician;
   }
 
@@ -55,13 +59,19 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnFan;
+      MaterialButton btnFan = ViewBindings.findChildViewById(rootView, id);
+      if (btnFan == null) {
+        break missingId;
+      }
+
       id = R.id.btnStatistician;
       MaterialButton btnStatistician = ViewBindings.findChildViewById(rootView, id);
       if (btnStatistician == null) {
         break missingId;
       }
 
-      return new ActivityMainBinding((LinearLayout) rootView, btnStatistician);
+      return new ActivityMainBinding((LinearLayout) rootView, btnFan, btnStatistician);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
