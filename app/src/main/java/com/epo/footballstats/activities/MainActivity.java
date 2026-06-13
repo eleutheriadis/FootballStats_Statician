@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.epo.footballstats.R;
 
 /**
- * Κεντρική οθόνη: επιλογή ρόλου.
- *   • Υπεύθυνος Στατιστικής → R1 + R2
- *   • Φίλαθλος             → R3 + R4
+ * Κεντρική οθόνη — Εφαρμογή Υπευθύνου Στατιστικής.
+ *
+ * Διαθέτει μόνο έναν ρόλο (στατιστικός) → ροή R1 + R2.
+ * (Ο ρόλος "Φίλαθλος" βρίσκεται σε ξεχωριστή εφαρμογή.)
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -21,15 +22,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnStatistician = findViewById(R.id.btnStatistician);
-        Button btnFan          = findViewById(R.id.btnFan);
-
         btnStatistician.setOnClickListener(v -> {
             Intent intent = new Intent(this, SelectMatchActivity.class);
-            startActivity(intent);
-        });
-
-        btnFan.setOnClickListener(v -> {
-            Intent intent = new Intent(this, FanSelectMatchActivity.class);
             startActivity(intent);
         });
     }

@@ -95,6 +95,9 @@ public final class ActivityManageMatchBinding implements ViewBinding {
   public final TextView tvHomeTeamName;
 
   @NonNull
+  public final TextView tvLiveMinute;
+
+  @NonNull
   public final TextView tvLiveScore;
 
   private ActivityManageMatchBinding(@NonNull LinearLayout rootView,
@@ -109,7 +112,8 @@ public final class ActivityManageMatchBinding implements ViewBinding {
       @NonNull MaterialButton btnTackleSuccess, @NonNull MaterialButton btnYellowCardAgainst,
       @NonNull MaterialButton btnYellowCardFor, @NonNull RadioButton rbAwayTeam,
       @NonNull RadioButton rbHomeTeam, @NonNull RadioGroup rgTeam, @NonNull TextView tvAwayTeamName,
-      @NonNull TextView tvHomeTeamName, @NonNull TextView tvLiveScore) {
+      @NonNull TextView tvHomeTeamName, @NonNull TextView tvLiveMinute,
+      @NonNull TextView tvLiveScore) {
     this.rootView = rootView;
     this.btnAssist = btnAssist;
     this.btnCorner = btnCorner;
@@ -135,6 +139,7 @@ public final class ActivityManageMatchBinding implements ViewBinding {
     this.rgTeam = rgTeam;
     this.tvAwayTeamName = tvAwayTeamName;
     this.tvHomeTeamName = tvHomeTeamName;
+    this.tvLiveMinute = tvLiveMinute;
     this.tvLiveScore = tvLiveScore;
   }
 
@@ -309,6 +314,12 @@ public final class ActivityManageMatchBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvLiveMinute;
+      TextView tvLiveMinute = ViewBindings.findChildViewById(rootView, id);
+      if (tvLiveMinute == null) {
+        break missingId;
+      }
+
       id = R.id.tvLiveScore;
       TextView tvLiveScore = ViewBindings.findChildViewById(rootView, id);
       if (tvLiveScore == null) {
@@ -320,7 +331,7 @@ public final class ActivityManageMatchBinding implements ViewBinding {
           btnPassSuccess, btnRedCardAgainst, btnRedCardFor, btnShotBlocked, btnShotHeader,
           btnShotOffTarget, btnShotOnTarget, btnTackleFail, btnTackleSuccess, btnYellowCardAgainst,
           btnYellowCardFor, rbAwayTeam, rbHomeTeam, rgTeam, tvAwayTeamName, tvHomeTeamName,
-          tvLiveScore);
+          tvLiveMinute, tvLiveScore);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

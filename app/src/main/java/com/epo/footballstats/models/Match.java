@@ -15,6 +15,8 @@ public class Match {
     private int homeScore;
     private int awayScore;
     private int currentMinute;
+    /** Timestamp έναρξης του αγώνα (όταν πέρασε σε LIVE). Null όσο είναι SCHEDULED. */
+    private Timestamp liveStartTime;
 
     public Match() {}
 
@@ -53,6 +55,9 @@ public class Match {
 
     public int getCurrentMinute() { return currentMinute; }
     public void setCurrentMinute(int currentMinute) { this.currentMinute = currentMinute; }
+
+    public Timestamp getLiveStartTime() { return liveStartTime; }
+    public void setLiveStartTime(Timestamp liveStartTime) { this.liveStartTime = liveStartTime; }
 
     public String getScoreDisplay() {
         return homeScore + " - " + awayScore;

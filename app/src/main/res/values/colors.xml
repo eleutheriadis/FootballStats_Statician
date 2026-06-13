@@ -14,4 +14,8 @@
     <color name="btn_yellow">#F57F17</color>
     <color name="matchLive">#4CAF50</color>
     <color name="matchFinished">#9E9E9E</color>
+    <color name="matchScheduled">#2196F3</color>
+
+    <!-- R1: SubstitutionsFragment -->
+    <color name="divider_dark">#333333</color>
 </resources>

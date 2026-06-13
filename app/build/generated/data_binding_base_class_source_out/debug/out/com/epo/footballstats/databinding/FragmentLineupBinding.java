@@ -24,12 +24,16 @@ public final class FragmentLineupBinding implements ViewBinding {
   public final RecyclerView rvStarting;
 
   @NonNull
+  public final TextView tvLineupEmpty;
+
+  @NonNull
   public final TextView tvLineupTitle;
 
   private FragmentLineupBinding(@NonNull LinearLayout rootView, @NonNull RecyclerView rvStarting,
-      @NonNull TextView tvLineupTitle) {
+      @NonNull TextView tvLineupEmpty, @NonNull TextView tvLineupTitle) {
     this.rootView = rootView;
     this.rvStarting = rvStarting;
+    this.tvLineupEmpty = tvLineupEmpty;
     this.tvLineupTitle = tvLineupTitle;
   }
 
@@ -66,13 +70,20 @@ public final class FragmentLineupBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvLineupEmpty;
+      TextView tvLineupEmpty = ViewBindings.findChildViewById(rootView, id);
+      if (tvLineupEmpty == null) {
+        break missingId;
+      }
+
       id = R.id.tvLineupTitle;
       TextView tvLineupTitle = ViewBindings.findChildViewById(rootView, id);
       if (tvLineupTitle == null) {
         break missingId;
       }
 
-      return new FragmentLineupBinding((LinearLayout) rootView, rvStarting, tvLineupTitle);
+      return new FragmentLineupBinding((LinearLayout) rootView, rvStarting, tvLineupEmpty,
+          tvLineupTitle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

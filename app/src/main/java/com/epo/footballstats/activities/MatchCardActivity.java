@@ -3,6 +3,8 @@ package com.epo.footballstats.activities;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,6 +28,7 @@ import com.epo.footballstats.adapters.LineupAdapter;
 import com.epo.footballstats.models.LineupPlayer;
 import com.epo.footballstats.models.Substitution;
 import com.epo.footballstats.utils.FirestoreHelper;
+import com.epo.footballstats.utils.MatchClock;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.Timestamp;
@@ -37,13 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * R1 - Κάρτα Αγώνα:
- *   • Tab 1: Ενδεκάδα Αρχικής
- *   • Tab 2: Ενδεκάδα Φιλοξ.
- *   • Tab 3: Αλλαγές
- *   • Κουμπί "Διαχείριση Αγώνα" → ManageMatchActivity (R2)
- */
 public class MatchCardActivity extends AppCompatActivity {
 
     // Extras
@@ -59,12 +55,25 @@ public class MatchCardActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
 
+    // Live clock — υπολογίζεται client-side από το liveStartTime
+    private final Handler clockHandler = new Handler(Looper.getMainLooper());
+    private Timestamp liveStartTime;
+    private String currentStatus;
+    /** Σημαία για να μη γράφουμε το status=FINISHED πολλές φορές στη Firestore. */
+    private boolean autoFinishAttempted = false;
+    private final Runnable clockTick = new Runnable() {
+        @Override
+        public void run() {
+            refreshMinute();
+            clockHandler.postDelayed(this, 1000);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_card);
 
-        // Διάβασμα extras
         matchId      = getIntent().getStringExtra("MATCH_ID");
         homeTeamId   = getIntent().getStringExtra("HOME_TEAM_ID");
         awayTeamId   = getIntent().getStringExtra("AWAY_TEAM_ID");
@@ -73,7 +82,6 @@ public class MatchCardActivity extends AppCompatActivity {
         int homeScore = getIntent().getIntExtra("HOME_SCORE", 0);
         int awayScore = getIntent().getIntExtra("AWAY_SCORE", 0);
 
-        // Views
         tvHomeTeam = findViewById(R.id.tvHomeTeam);
         tvAwayTeam = findViewById(R.id.tvAwayTeam);
         tvScore    = findViewById(R.id.tvScore);
@@ -85,29 +93,22 @@ public class MatchCardActivity extends AppCompatActivity {
         tvAwayTeam.setText(awayTeamName);
         tvScore.setText(homeScore + " - " + awayScore);
 
-        // ViewPager2 με 3 tabs
         String[] tabTitles = {homeTeamName, awayTeamName, "Αλλαγές"};
         viewPager.setAdapter(new LineupPagerAdapter(this, tabTitles));
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(tabTitles[position])
         ).attach();
 
-        // Κουμπί Στατιστικά R2
         findViewById(R.id.btnManageStats).setOnClickListener(v -> openManageMatch());
 
-        // Κουμπί αλλαγής παίκτη
         findViewById(R.id.btnSubstitution).setOnClickListener(v -> showSubstitutionDialog());
 
-        // Φόρτωση ενδεκάδων από Firestore
         loadLineup(homeTeamId, homePlayers);
         loadLineup(awayTeamId, awayPlayers);
 
-        // Real-time ακρόαση αλλαγών από Firestore
         listenForSubstitutions();
         listenForMatchUpdates();
     }
-
-    // ── Firestore: φόρτωση ενδεκάδας ──────────────────────────────────────────
 
     private void loadLineup(String teamId, List<LineupPlayer> targetList) {
         FirestoreHelper.lineupsRef(matchId)
@@ -123,7 +124,6 @@ public class MatchCardActivity extends AppCompatActivity {
                                 LineupPlayer lp = mapToLineupPlayer(m);
                                 targetList.add(lp);
                             }
-                            // Ανανέωση ViewPager (απλός τρόπος)
                             viewPager.getAdapter().notifyDataSetChanged();
                         }
                     }
@@ -147,8 +147,6 @@ public class MatchCardActivity extends AppCompatActivity {
         return lp;
     }
 
-    // ── Firestore: real-time αλλαγές ──────────────────────────────────────────
-
     private void listenForSubstitutions() {
         FirestoreHelper.substitutionsRef(matchId)
                 .addSnapshotListener((snapshots, e) -> {
@@ -159,7 +157,6 @@ public class MatchCardActivity extends AppCompatActivity {
                         if (sub != null) {
                             sub.setId(doc.getId());
                             substitutions.add(sub);
-                            // Σήμανση παίκτη ως ανενεργού
                             markPlayerInactive(sub.getTeamId(), sub.getPlayerOutId());
                         }
                     }
@@ -171,14 +168,62 @@ public class MatchCardActivity extends AppCompatActivity {
         FirestoreHelper.matchesRef().document(matchId)
                 .addSnapshotListener((snapshot, e) -> {
                     if (e != null || snapshot == null || !snapshot.exists()) return;
+
                     Long homeScore = snapshot.getLong("homeScore");
                     Long awayScore = snapshot.getLong("awayScore");
-                    Long minute    = snapshot.getLong("currentMinute");
                     if (homeScore != null && awayScore != null)
                         tvScore.setText(homeScore + " - " + awayScore);
-                    if (minute != null)
-                        tvMinute.setText(minute + "'");
+
+                    // Live clock state — διαβάζουμε kickoff timestamp + status.
+                    // Δεν διαβάζουμε πια currentMinute από το backend — το
+                    // υπολογίζουμε client-side μέσω MatchClock.
+                    currentStatus = snapshot.getString("status");
+                    liveStartTime = snapshot.getTimestamp("liveStartTime");
+
+                    refreshMinute();
+
+                    if ("LIVE".equals(currentStatus) && liveStartTime != null) {
+                        clockHandler.removeCallbacks(clockTick);
+                        clockHandler.post(clockTick);
+                    } else {
+                        clockHandler.removeCallbacks(clockTick);
+                    }
                 });
+    }
+
+    /** Ενημερώνει το tvMinute βάσει του τρέχοντος status + liveStartTime. */
+    private void refreshMinute() {
+        if (tvMinute == null) return;
+        if ("FINISHED".equals(currentStatus)) {
+            tvMinute.setText("Τελικό");
+        } else if ("LIVE".equals(currentStatus) && liveStartTime != null) {
+            int m = MatchClock.currentMinute(liveStartTime);
+            tvMinute.setText(m + "'");
+            if (m >= MatchClock.MAX_MINUTE) {
+                clockHandler.removeCallbacks(clockTick);
+                autoFinishMatch();
+            }
+        } else {
+            tvMinute.setText("—");
+        }
+    }
+
+    /**
+     * Όταν ο μετρητής φτάσει στο 90', γράφει status=FINISHED στη Firestore.
+     * Όλοι οι snapshot listeners (στατιστικός + φίλαθλοι) θα δουν την αλλαγή
+     * και θα εμφανίσουν "Τελικό". Η σημαία αποτρέπει διπλά writes.
+     */
+    private void autoFinishMatch() {
+        if (autoFinishAttempted) return;
+        autoFinishAttempted = true;
+        FirestoreHelper.matchesRef().document(matchId)
+                .update("status", "FINISHED");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clockHandler.removeCallbacks(clockTick);
     }
 
     private void markPlayerInactive(String teamId, String playerId) {
@@ -191,8 +236,6 @@ public class MatchCardActivity extends AppCompatActivity {
         }
     }
 
-    // ── Dialog: Αλλαγή παίκτη ─────────────────────────────────────────────────
-
     private void showSubstitutionDialog() {
         View dialogView = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_substitution, null);
@@ -202,14 +245,12 @@ public class MatchCardActivity extends AppCompatActivity {
         Spinner spinnerPlayerIn  = dialogView.findViewById(R.id.spinnerPlayerIn);
         EditText etMinute        = dialogView.findViewById(R.id.etMinute);
 
-        // Spinner ομάδας
         ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
                 new String[]{homeTeamName, awayTeamName});
         teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTeam.setAdapter(teamAdapter);
 
-        // Αλλαγή ομάδας → ανανέωση παικτών
         spinnerTeam.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, View view, int pos, long id) {
@@ -298,8 +339,6 @@ public class MatchCardActivity extends AppCompatActivity {
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Σφάλμα: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-
-    // ── ViewPager2 Adapter ─────────────────────────────────────────────────────
 
     private class LineupPagerAdapter extends FragmentStateAdapter {
         private final String[] titles;

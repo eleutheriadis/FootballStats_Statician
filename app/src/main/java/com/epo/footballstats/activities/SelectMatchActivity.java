@@ -14,15 +14,12 @@ import com.epo.footballstats.R;
 import com.epo.footballstats.adapters.MatchAdapter;
 import com.epo.footballstats.models.Match;
 import com.epo.footballstats.utils.FirestoreHelper;
+import com.epo.footballstats.utils.MatchSorting;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * R1 - Βήμα 1: Ο υπεύθυνος στατιστικής επιλέγει τον αγώνα που θα διαχειριστεί.
- * Φορτώνει από το Firestore όλους τους αγώνες με status SCHEDULED ή LIVE.
- */
 public class SelectMatchActivity extends AppCompatActivity {
 
     private RecyclerView rvMatches;
@@ -45,10 +42,6 @@ public class SelectMatchActivity extends AppCompatActivity {
         loadMatches();
     }
 
-    /**
-     * Φόρτωση αγώνων από Firestore.
-     * Εμφανίζει μόνο αγώνες σε κατάσταση SCHEDULED ή LIVE.
-     */
     private void loadMatches() {
         progressBar.setVisibility(View.VISIBLE);
 
@@ -65,6 +58,7 @@ public class SelectMatchActivity extends AppCompatActivity {
                             matchList.add(match);
                         }
                     }
+                    MatchSorting.sort(matchList);
                     adapter.notifyDataSetChanged();
 
                     if (matchList.isEmpty()) {
@@ -77,9 +71,6 @@ public class SelectMatchActivity extends AppCompatActivity {
                 });
     }
 
-    /**
-     * Ο χρήστης επέλεξε αγώνα → άνοιγμα κάρτας αγώνα (R1).
-     */
     private void onMatchSelected(Match match) {
         Intent intent = new Intent(this, MatchCardActivity.class);
         intent.putExtra("MATCH_ID",        match.getId());

@@ -2,6 +2,8 @@ package com.epo.footballstats.activities;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import com.epo.footballstats.R;
 import com.epo.footballstats.models.LineupPlayer;
 import com.epo.footballstats.models.MatchStat;
 import com.epo.footballstats.utils.FirestoreHelper;
+import com.epo.footballstats.utils.MatchClock;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -47,7 +50,21 @@ public class ManageMatchActivity extends AppCompatActivity {
     private final List<LineupPlayer> awayPlayers = new ArrayList<>();
 
     private RadioGroup rgTeam;
-    private TextView tvHomeTeamName, tvAwayTeamName, tvLiveScore;
+    private TextView tvHomeTeamName, tvAwayTeamName, tvLiveScore, tvLiveMinute;
+
+    // Live clock — υπολογίζεται client-side από το liveStartTime
+    private final Handler clockHandler = new Handler(Looper.getMainLooper());
+    private Timestamp liveStartTime;
+    private String currentStatus;
+    /** Σημαία για να μη γράφουμε το status=FINISHED πολλές φορές στη Firestore. */
+    private boolean autoFinishAttempted = false;
+    private final Runnable clockTick = new Runnable() {
+        @Override
+        public void run() {
+            refreshMinute();
+            clockHandler.postDelayed(this, 1000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +80,7 @@ public class ManageMatchActivity extends AppCompatActivity {
         tvHomeTeamName = findViewById(R.id.tvHomeTeamName);
         tvAwayTeamName = findViewById(R.id.tvAwayTeamName);
         tvLiveScore    = findViewById(R.id.tvLiveScore);
+        tvLiveMinute   = findViewById(R.id.tvLiveMinute);
         rgTeam         = findViewById(R.id.rgTeam);
 
         tvHomeTeamName.setText(homeTeamName);
@@ -154,7 +172,7 @@ public class ManageMatchActivity extends AppCompatActivity {
                 });
     }
 
-    /** Real-time ακρόαση για ανανέωση σκορ */
+    /** Real-time ακρόαση για ανανέωση σκορ + live clock state. */
     private void listenScore() {
         FirestoreHelper.matchesRef().document(matchId)
                 .addSnapshotListener((snap, e) -> {
@@ -163,7 +181,56 @@ public class ManageMatchActivity extends AppCompatActivity {
                     Long a = snap.getLong("awayScore");
                     if (h != null && a != null)
                         tvLiveScore.setText(h + " - " + a);
+
+                    // Live clock — διαβάζουμε kickoff timestamp + status και
+                    // υπολογίζουμε client-side το τρέχον λεπτό μέσω MatchClock.
+                    currentStatus = snap.getString("status");
+                    liveStartTime = snap.getTimestamp("liveStartTime");
+
+                    refreshMinute();
+
+                    if ("LIVE".equals(currentStatus) && liveStartTime != null) {
+                        clockHandler.removeCallbacks(clockTick);
+                        clockHandler.post(clockTick);
+                    } else {
+                        clockHandler.removeCallbacks(clockTick);
+                    }
                 });
+    }
+
+    /** Ενημερώνει το tvLiveMinute βάσει του τρέχοντος status + liveStartTime. */
+    private void refreshMinute() {
+        if (tvLiveMinute == null) return;
+        if ("FINISHED".equals(currentStatus)) {
+            tvLiveMinute.setText("Τελικό");
+        } else if ("LIVE".equals(currentStatus) && liveStartTime != null) {
+            int m = MatchClock.currentMinute(liveStartTime);
+            tvLiveMinute.setText(m + "'");
+            if (m >= MatchClock.MAX_MINUTE) {
+                clockHandler.removeCallbacks(clockTick);
+                autoFinishMatch();
+            }
+        } else {
+            tvLiveMinute.setText("—");
+        }
+    }
+
+    /**
+     * Όταν ο μετρητής φτάσει στο 90', γράφει status=FINISHED στη Firestore.
+     * Όλοι οι snapshot listeners (στατιστικός + φίλαθλοι) θα δουν την αλλαγή.
+     * Η σημαία αποτρέπει διπλά writes.
+     */
+    private void autoFinishMatch() {
+        if (autoFinishAttempted) return;
+        autoFinishAttempted = true;
+        FirestoreHelper.matchesRef().document(matchId)
+                .update("status", "FINISHED");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clockHandler.removeCallbacks(clockTick);
     }
 
     // ── Dialogs καταγραφής ────────────────────────────────────────────────────

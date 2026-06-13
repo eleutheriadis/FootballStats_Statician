@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.epo.footballstats.R;
@@ -43,19 +44,20 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.tvScore.setText(match.getScoreDisplay());
         holder.tvStatus.setText(match.getStatus());
 
-        // Χρωματισμός κατάστασης
-        int color;
+        // Χρωματισμός κατάστασης — όλα τα χρώματα δηλώνονται στο res/values/colors.xml
+        int colorRes;
         switch (match.getStatus() != null ? match.getStatus() : "") {
             case "LIVE":
-                color = 0xFF4CAF50;
+                colorRes = R.color.matchLive;
                 break;
             case "FINISHED":
-                color = 0xFF9E9E9E;
+                colorRes = R.color.matchFinished;
                 break;
             default:
-                color = 0xFF2196F3;
+                colorRes = R.color.matchScheduled;
         }
-        holder.tvStatus.setTextColor(color);
+        holder.tvStatus.setTextColor(
+                ContextCompat.getColor(holder.itemView.getContext(), colorRes));
 
         holder.itemView.setOnClickListener(v -> listener.onMatchClick(match));
     }

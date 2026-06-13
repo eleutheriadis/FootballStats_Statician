@@ -1,10 +1,6 @@
 package com.epo.footballstats.models;
 
-/**
- * Represents a player entry in a match lineup.
- * Stored in Firestore under: matches/{matchId}/lineups/{homeTeamId or awayTeamId}
- * Field "players" is a list of LineupPlayer objects.
- */
+
 public class LineupPlayer {
     private String playerId;
     private String playerName;
