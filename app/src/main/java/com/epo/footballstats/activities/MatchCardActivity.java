@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -220,6 +219,13 @@ public class MatchCardActivity extends AppCompatActivity {
                 .update("status", "FINISHED");
     }
 
+    /** Επιστρέφει το τρέχον λεπτό αγώνα ή 0 αν ο αγώνας δεν είναι LIVE. */
+    private int computeAutoMinute() {
+        return "LIVE".equals(currentStatus) && liveStartTime != null
+                ? MatchClock.currentMinute(liveStartTime)
+                : 0;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -243,7 +249,11 @@ public class MatchCardActivity extends AppCompatActivity {
         Spinner spinnerTeam      = dialogView.findViewById(R.id.spinnerTeam);
         Spinner spinnerPlayerOut = dialogView.findViewById(R.id.spinnerPlayerOut);
         Spinner spinnerPlayerIn  = dialogView.findViewById(R.id.spinnerPlayerIn);
-        EditText etMinute        = dialogView.findViewById(R.id.etMinute);
+        TextView tvCurrentMinute = dialogView.findViewById(R.id.tvCurrentMinute);
+
+        // Λεπτό αγώνα: γεμίζει αυτόματα από MatchClock (όχι manual εισαγωγή).
+        int autoMinute = computeAutoMinute();
+        tvCurrentMinute.setText("Λεπτό αλλαγής: " + autoMinute + "'");
 
         ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item,
@@ -306,8 +316,9 @@ public class MatchCardActivity extends AppCompatActivity {
                     LineupPlayer playerOut = activePlayers.get(outIdx);
                     LineupPlayer playerIn  = benchPlayers.get(inIdx);
 
-                    String minStr = etMinute.getText().toString().trim();
-                    int minute = minStr.isEmpty() ? 0 : Integer.parseInt(minStr);
+                    // Ξαναϋπολογίζουμε το λεπτό σε περίπτωση που το dialog
+                    // έμεινε ανοιχτό για ώρα πριν πατηθεί το Αποθήκευση.
+                    int minute = computeAutoMinute();
 
                     saveSubstitution(
                             isHome ? homeTeamId : awayTeamId,

@@ -8,10 +8,6 @@
         "source": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-main-41:/layout/activity_fan_select_match.xml"
     },
     {
-        "merged": "com.epo.footballstats.app-merged_res-39:/layout_activity_manage_match.xml.flat",
-        "source": "com.epo.footballstats.app-main-41:/layout/activity_manage_match.xml"
-    },
-    {
         "merged": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-merged_res-39:/layout_dialog_stat.xml.flat",
         "source": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-main-41:/layout/dialog_stat.xml"
     },
@@ -76,7 +72,15 @@
         "source": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-main-41:/mipmap-hdpi/ic_launcher.png"
     },
     {
+        "merged": "com.epo.footballstats.app-merged_res-39:/layout_dialog_substitution.xml.flat",
+        "source": "com.epo.footballstats.app-main-41:/layout/dialog_substitution.xml"
+    },
+    {
         "merged": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-merged_res-39:/layout_activity_fan_match.xml.flat",
         "source": "/Users/nikos/.gradle/daemon/8.2/com.epo.footballstats.app-main-41:/layout/activity_fan_match.xml"
+    },
+    {
+        "merged": "com.epo.footballstats.app-merged_res-39:/layout_dialog_stat.xml.flat",
+        "source": "com.epo.footballstats.app-main-41:/layout/dialog_stat.xml"
     }
 ]

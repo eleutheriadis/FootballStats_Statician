@@ -3333,7 +3333,6 @@ int id end 0x7f0800cf
 int id endToStart 0x7f0800d0
 int id enterAlways 0x7f0800d1
 int id enterAlwaysCollapsed 0x7f0800d2
-int id etMinute 0x7f0800d3
 int id exitUntilCollapsed 0x7f0800d4
 int id expand_activities_button 0x7f0800d5
 int id expanded_menu 0x7f0800d6
@@ -3645,6 +3644,7 @@ int id transition_transform 0x7f08020b
 int id triangle 0x7f08020c
 int id tvAwayTeam 0x7f08020d
 int id tvAwayTeamName 0x7f08020e
+int id tvCurrentMinute 0x7f08024c
 int id tvDialogTitle 0x7f080212
 int id tvHomeTeam 0x7f080218
 int id tvHomeTeamName 0x7f080219

@@ -4,9 +4,9 @@ package com.epo.footballstats.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
@@ -21,9 +21,6 @@ public final class DialogSubstitutionBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final EditText etMinute;
-
-  @NonNull
   public final Spinner spinnerPlayerIn;
 
   @NonNull
@@ -32,14 +29,17 @@ public final class DialogSubstitutionBinding implements ViewBinding {
   @NonNull
   public final Spinner spinnerTeam;
 
-  private DialogSubstitutionBinding(@NonNull LinearLayout rootView, @NonNull EditText etMinute,
+  @NonNull
+  public final TextView tvCurrentMinute;
+
+  private DialogSubstitutionBinding(@NonNull LinearLayout rootView,
       @NonNull Spinner spinnerPlayerIn, @NonNull Spinner spinnerPlayerOut,
-      @NonNull Spinner spinnerTeam) {
+      @NonNull Spinner spinnerTeam, @NonNull TextView tvCurrentMinute) {
     this.rootView = rootView;
-    this.etMinute = etMinute;
     this.spinnerPlayerIn = spinnerPlayerIn;
     this.spinnerPlayerOut = spinnerPlayerOut;
     this.spinnerTeam = spinnerTeam;
+    this.tvCurrentMinute = tvCurrentMinute;
   }
 
   @Override
@@ -69,12 +69,6 @@ public final class DialogSubstitutionBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.etMinute;
-      EditText etMinute = ViewBindings.findChildViewById(rootView, id);
-      if (etMinute == null) {
-        break missingId;
-      }
-
       id = R.id.spinnerPlayerIn;
       Spinner spinnerPlayerIn = ViewBindings.findChildViewById(rootView, id);
       if (spinnerPlayerIn == null) {
@@ -93,8 +87,14 @@ public final class DialogSubstitutionBinding implements ViewBinding {
         break missingId;
       }
 
-      return new DialogSubstitutionBinding((LinearLayout) rootView, etMinute, spinnerPlayerIn,
-          spinnerPlayerOut, spinnerTeam);
+      id = R.id.tvCurrentMinute;
+      TextView tvCurrentMinute = ViewBindings.findChildViewById(rootView, id);
+      if (tvCurrentMinute == null) {
+        break missingId;
+      }
+
+      return new DialogSubstitutionBinding((LinearLayout) rootView, spinnerPlayerIn,
+          spinnerPlayerOut, spinnerTeam, tvCurrentMinute);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

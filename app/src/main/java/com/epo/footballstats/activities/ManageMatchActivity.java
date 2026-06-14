@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -264,16 +263,21 @@ public class ManageMatchActivity extends AppCompatActivity {
     }
 
     /**
-     * Κοινό dialog επιλογής παίκτη και λεπτού.
+     * Κοινό dialog επιλογής παίκτη. Το λεπτό υπολογίζεται αυτόματα από
+     * το {@link MatchClock} βάσει του {@code liveStartTime}.
      */
     private void showPlayerMinuteDialog(String type, String result, String direction,
                                         String extra, String scoreUpdate) {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_stat, null);
-        TextView tvTitle = dialogView.findViewById(R.id.tvDialogTitle);
-        Spinner spinnerPlayer = dialogView.findViewById(R.id.spinnerPlayer);
-        EditText etMinute     = dialogView.findViewById(R.id.etMinute);
+        TextView tvTitle         = dialogView.findViewById(R.id.tvDialogTitle);
+        Spinner spinnerPlayer    = dialogView.findViewById(R.id.spinnerPlayer);
+        TextView tvCurrentMinute = dialogView.findViewById(R.id.tvCurrentMinute);
 
         tvTitle.setText(typeLabel(type, result, direction, extra));
+
+        // Υπολογίζουμε το λεπτό μία φορά στο άνοιγμα του dialog.
+        int autoMinute = computeAutoMinute();
+        tvCurrentMinute.setText("Λεπτό αγώνα: " + autoMinute + "'");
 
         List<LineupPlayer> activePlayers = selectedPlayers().stream()
                 .filter(LineupPlayer::isActive).collect(Collectors.toList());
@@ -299,13 +303,20 @@ public class ManageMatchActivity extends AppCompatActivity {
                     if (idx < 0 || idx >= activePlayers.size()) return;
 
                     LineupPlayer player = activePlayers.get(idx);
-                    String minStr = etMinute.getText().toString().trim();
-                    int minute = minStr.isEmpty() ? 0 : Integer.parseInt(minStr);
+                    // Ξαναϋπολογίζουμε σε περίπτωση που το dialog έμεινε ανοιχτό αρκετή ώρα
+                    int minute = computeAutoMinute();
 
                     saveStat(type, result, direction, extra, player, minute, scoreUpdate);
                 })
                 .setNegativeButton("Ακύρωση", null)
                 .show();
+    }
+
+    /** Επιστρέφει το τρέχον λεπτό αγώνα ή 0 αν ο αγώνας δεν είναι LIVE. */
+    private int computeAutoMinute() {
+        return "LIVE".equals(currentStatus) && liveStartTime != null
+                ? MatchClock.currentMinute(liveStartTime)
+                : 0;
     }
 
     // ── Αποθήκευση στο Firestore ───────────────────────────────────────────────
